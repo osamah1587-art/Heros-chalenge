@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="مسابقة الأذكياء">
+<title>مسابقة الأذكياء 🌟</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0d1a;--surface:#161628;--card:#1e1e3a;
+  --gold:#f5c842;--teal:#2dd4bf;--coral:#ff6b6b;
+  --violet:#a78bfa;--green:#4ade80;--blue:#60a5fa;
+  --text:#f0f0ff;--dim:#8888aa;--border:rgba(255,255,255,0.08);
+  --r:16px;--rs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;direction:rtl}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(167,139,250,.07) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(45,212,191,.05) 0%,transparent 50%);pointer-events:none;z-index:0}
+.screen{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1}
+.screen.active{display:flex}
+
+/* HOME */
+#home{align-items:center;padding:36px 18px 30px;gap:0;background:linear-gradient(180deg,#0d0d2a 0%,#0d0d1a 60%)}
+.logo-emoji{font-size:68px;display:block;animation:float 3s ease-in-out infinite;text-align:center}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.logo-title{font-size:34px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-top:6px}
+.logo-sub{font-size:13px;color:var(--dim);text-align:center;margin-bottom:24px}
+.sec-label{font-size:12px;color:var(--dim);letter-spacing:1px;margin-bottom:10px;text-align:center;width:100%;max-width:420px}
+.age-cards{display:flex;gap:10px;width:100%;max-width:420px;margin-bottom:20px}
+.age-card{flex:1;background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:14px 6px;cursor:pointer;text-align:center;transition:all .2s}
+.age-card.sel7{border-color:var(--green);background:rgba(74,222,128,.1)}
+.age-card.sel10{border-color:var(--teal);background:rgba(45,212,191,.1)}
+.age-card.sel13{border-color:var(--violet);background:rgba(167,139,250,.1)}
+.age-emoji{font-size:28px;display:block;margin-bottom:4px}
+.age-num{font-size:20px;font-weight:900}
+.age-num7{color:var(--green)}.age-num10{color:var(--teal)}.age-num13{color:var(--violet)}
+.age-lbl{font-size:11px;color:var(--dim)}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:420px;margin-bottom:20px}
+.cat-btn{background:var(--card);border:2px solid var(--border);border-radius:var(--rs);padding:10px 4px;cursor:pointer;text-align:center;transition:all .2s}
+.cat-btn.sel{border-color:var(--teal);background:rgba(45,212,191,.1)}
+.cat-icon{font-size:22px;display:block;margin-bottom:3px}
+.cat-name{font-size:11px;font-weight:600}
+.mode-row{display:flex;gap:10px;width:100%;max-width:420px;margin-bottom:20px}
+.mode-card{flex:1;background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:16px 10px;cursor:pointer;text-align:center;transition:all .2s}
+.mode-card.sel-solo{border-color:var(--gold);background:rgba(245,200,66,.1)}
+.mode-card.sel-comp{border-color:var(--coral);background:rgba(255,107,107,.1)}
+.mode-icon{font-size:30px;display:block;margin-bottom:6px}
+.mode-name{font-weight:700;font-size:14px}
+.mode-desc{font-size:11px;color:var(--dim);margin-top:2px}
+.start-btn{width:100%;max-width:420px;padding:17px;background:linear-gradient(135deg,var(--gold),#d4960a);border:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:19px;font-weight:900;color:#0d0d1a;cursor:pointer;box-shadow:0 4px 20px rgba(245,200,66,.4);transition:transform .15s}
+.start-btn:active{transform:scale(.97)}
+
+/* COMPETE SETUP */
+#compete-setup{align-items:center;padding:40px 18px 30px;gap:14px}
+.comp-title{font-size:26px;font-weight:900;color:var(--coral);text-align:center}
+.player-inputs{width:100%;max-width:420px;display:flex;flex-direction:column;gap:10px}
+.p-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:var(--rs);padding:10px 14px;border:2px solid var(--border)}
+.p-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.p-inp{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Cairo',sans-serif;font-size:15px;text-align:right;direction:rtl}
+.p-del{background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px}
+.add-p-btn{width:100%;max-width:420px;padding:13px;background:var(--card);border:2px dashed var(--border);border-radius:var(--rs);color:var(--dim);font-family:'Cairo',sans-serif;font-size:14px;cursor:pointer}
+.comp-go-btn{width:100%;max-width:420px;padding:17px;background:linear-gradient(135deg,var(--coral),#c93030);border:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:19px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,107,.4)}
+.back-btn{background:none;border:none;color:var(--dim);font-family:'Cairo',sans-serif;font-size:14px;cursor:pointer;padding:6px}
+
+/* QUIZ */
+#quiz{padding:0;flex-direction:column}
+.qhdr{background:var(--surface);padding:12px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+.q-back{background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;padding:4px}
+.q-meta{flex:1}
+.q-prog-lbl{font-size:11px;color:var(--dim)}
+.q-prog-bar{height:4px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden}
+.q-prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--violet));border-radius:2px;transition:width .4s}
+.q-score{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 11px;font-size:12px;font-weight:700;color:var(--gold)}
+.timer-wrap{position:relative;width:48px;height:48px;flex-shrink:0}
+.timer-wrap svg{transform:rotate(-90deg)}
+.t-track{fill:none;stroke:var(--border);stroke-width:4}
+.t-fill{fill:none;stroke:var(--teal);stroke-width:4;stroke-linecap:round;stroke-dasharray:126;transition:stroke-dashoffset 1s linear,stroke .3s}
+.t-fill.warn{stroke:var(--coral)}
+.t-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--teal)}
+.t-num.warn{color:var(--coral)}
+.buzz-fb{padding:9px 16px;text-align:center;font-weight:700;font-size:14px;display:none;border-bottom:1px solid rgba(245,200,66,.2);background:rgba(245,200,66,.08);color:var(--gold)}
+.buzz-fb.vis{display:block}
+.buzz-bar{display:none;padding:9px 16px;gap:8px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);background:rgba(255,107,107,.05)}
+.buzz-bar.vis{display:flex}
+.buzz-bar::-webkit-scrollbar{display:none}
+.buzz-btn{flex-shrink:0;padding:9px 14px;border-radius:30px;border:2px solid;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:transparent;white-space:nowrap;transition:all .15s}
+.buzz-btn:active{transform:scale(.95)}
+.buzz-btn.buzzed{opacity:.35;cursor:not-allowed}
+.qbody{flex:1;padding:18px 16px 100px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.q-cat-badge{display:inline-flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 11px;font-size:11px;color:var(--dim);align-self:flex-start}
+.q-diff{display:flex;gap:4px;align-self:flex-start;margin-top:-6px}
+.q-diff span{width:9px;height:9px;border-radius:50%;background:var(--border)}
+.q-diff span.lit{background:var(--gold)}
+.q-text{font-size:19px;font-weight:700;line-height:1.65;color:var(--text)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:2px}
+.opt{background:var(--card);border:2px solid var(--border);border-radius:var(--rs);padding:15px 10px;text-align:center;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;position:relative;line-height:1.4}
+.opt:active{transform:scale(.98)}
+.opt.correct{border-color:var(--green);background:rgba(74,222,128,.15);color:var(--green)}
+.opt.wrong{border-color:var(--coral);background:rgba(255,107,107,.1);color:var(--coral)}
+.opt.reveal{border-color:var(--gold);background:rgba(245,200,66,.1);color:var(--gold)}
+.opt:disabled{cursor:default}
+.opt-ltr{position:absolute;top:5px;right:7px;font-size:9px;color:var(--dim);font-weight:900}
+.expl{background:rgba(45,212,191,.07);border:1px solid rgba(45,212,191,.2);border-radius:var(--rs);padding:12px;font-size:13px;line-height:1.7;color:#cceeff;display:none}
+.expl.vis{display:block}
+.next-btn{position:fixed;bottom:18px;right:50%;transform:translateX(50%);width:calc(100% - 32px);max-width:420px;padding:15px;background:linear-gradient(135deg,var(--teal),#1a9e95);border:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:17px;font-weight:700;color:#0d0d1a;cursor:pointer;display:none;z-index:20;box-shadow:0 4px 20px rgba(45,212,191,.4)}
+.next-btn.vis{display:block}
+
+/* RESULTS */
+#results{align-items:center;padding:40px 18px 30px;gap:14px}
+.res-hero{text-align:center}
+.res-trophy{font-size:70px;animation:float 2s ease-in-out infinite;display:block}
+.res-title{font-size:28px;font-weight:900;margin-top:8px}
+.res-sub{font-size:14px;color:var(--dim);margin-top:3px}
+.score-ring{position:relative;width:130px;height:130px;margin:0 auto}
+.score-ring svg{transform:rotate(-90deg)}
+.sr-track{fill:none;stroke:var(--border);stroke-width:10}
+.sr-fill{fill:none;stroke:var(--teal);stroke-width:10;stroke-linecap:round;stroke-dasharray:351;stroke-dashoffset:351;transition:stroke-dashoffset 1.2s ease}
+.sr-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sr-big{font-size:34px;font-weight:900;color:var(--gold)}
+.sr-small{font-size:12px;color:var(--dim)}
+.lb{width:100%;max-width:420px;display:flex;flex-direction:column;gap:9px}
+.lb-row{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:var(--rs);padding:13px 14px;border:1px solid var(--border)}
+.lb-rank{font-size:20px;width:28px;text-align:center;flex-shrink:0}
+.lb-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.lb-name{flex:1;font-weight:700;font-size:14px}
+.lb-score{font-size:17px;font-weight:900;color:var(--gold)}
+.again-btn{width:100%;max-width:420px;padding:17px;background:linear-gradient(135deg,var(--gold),#d4960a);border:none;border-radius:var(--r);font-family:'Cairo',sans-serif;font-size:19px;font-weight:900;color:#0d0d1a;cursor:pointer;box-shadow:0 4px 20px rgba(245,200,66,.4)}
+.home-btn{background:none;border:none;color:var(--dim);font-family:'Cairo',sans-serif;font-size:15px;cursor:pointer;text-decoration:underline}
+
+/* UTILS */
+.toast{position:fixed;top:18px;right:50%;transform:translateX(50%);background:var(--card);border:1px solid var(--border);border-radius:30px;padding:9px 18px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:13px 16px;display:flex;align-items:center;gap:10px;z-index:50;transform:translateY(100%);transition:transform .3s}
+.install-banner.show{transform:translateY(0)}
+.inst-text{flex:1;font-size:12px}
+.inst-text strong{display:block;font-size:14px}
+.inst-yes{background:var(--gold);border:none;border-radius:8px;padding:7px 13px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;color:#0d0d1a;cursor:pointer}
+.inst-no{background:none;border:none;color:var(--dim);font-size:19px;cursor:pointer}
+@media(max-width:360px){.opts{grid-template-columns:1fr}.q-text{font-size:17px}}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <span class="logo-emoji">🌟</span>
+  <div class="logo-title">مسابقة الأذكياء</div>
+  <div class="logo-sub">اختبر معلوماتك في كل المجالات</div>
+
+  <div class="sec-label">اختر الفئة العمرية</div>
+  <div class="age-cards">
+    <div class="age-card sel7" data-age="7" onclick="pickAge(7,this)">
+      <span class="age-emoji">🐣</span>
+      <div class="age-num age-num7">٧</div>
+      <div class="age-lbl">سنوات</div>
+    </div>
+    <div class="age-card" data-age="10" onclick="pickAge(10,this)">
+      <span class="age-emoji">🚀</span>
+      <div class="age-num age-num10">١٠</div>
+      <div class="age-lbl">سنوات</div>
+    </div>
+    <div class="age-card" data-age="13" onclick="pickAge(13,this)">
+      <span class="age-emoji">🦅</span>
+      <div class="age-num age-num13">١٣</div>
+      <div class="age-lbl">سنوات</div>
+    </div>
+  </div>
+
+  <div class="sec-label">اختر الموضوع</div>
+  <div class="cat-grid">
+    <div class="cat-btn sel" data-cat="religion" onclick="toggleCat(this)"><span class="cat-icon">🕌</span><div class="cat-name">الدين</div></div>
+    <div class="cat-btn" data-cat="science"  onclick="toggleCat(this)"><span class="cat-icon">🔬</span><div class="cat-name">العلوم</div></div>
+    <div class="cat-btn" data-cat="animals"  onclick="toggleCat(this)"><span class="cat-icon">🦁</span><div class="cat-name">الحيوانات</div></div>
+    <div class="cat-btn" data-cat="geography" onclick="toggleCat(this)"><span class="cat-icon">🌍</span><div class="cat-name">الجغرافيا</div></div>
+    <div class="cat-btn" data-cat="history"  onclick="toggleCat(this)"><span class="cat-icon">📜</span><div class="cat-name">التاريخ</div></div>
+    <div class="cat-btn" data-cat="quran"    onclick="toggleCat(this)"><span class="cat-icon">📖</span><div class="cat-name">القرآن</div></div>
+    <div class="cat-btn" data-cat="arabic"   onclick="toggleCat(this)"><span class="cat-icon">✏️</span><div class="cat-name">اللغة</div></div>
+    <div class="cat-btn" data-cat="math"     onclick="toggleCat(this)"><span class="cat-icon">🔢</span><div class="cat-name">الرياضيات</div></div>
+    <div class="cat-btn" data-cat="general"  onclick="toggleCat(this)"><span class="cat-icon">💡</span><div class="cat-name">معلومات</div></div>
+  </div>
+
+  <div class="sec-label">طريقة اللعب</div>
+  <div class="mode-row">
+    <div class="mode-card sel-solo" onclick="pickMode('solo',this)">
+      <span class="mode-icon">🧠</span>
+      <div class="mode-name">فردي</div>
+      <div class="mode-desc">العب بمفردك</div>
+    </div>
+    <div class="mode-card" onclick="pickMode('compete',this)">
+      <span class="mode-icon">⚡</span>
+      <div class="mode-name">تنافسي</div>
+      <div class="mode-desc">مع الأصدقاء</div>
+    </div>
+  </div>
+  <button class="start-btn" onclick="handleStart()">🚀 ابدأ اللعبة</button>
+</div>
+
+<!-- COMPETE SETUP -->
+<div id="compete-setup" class="screen">
+  <div class="comp-title">⚡ وضع التنافس</div>
+  <p style="color:var(--dim);font-size:12px;text-align:center">اضغط زرك عند معرفة الإجابة!</p>
+  <div class="player-inputs" id="player-inputs">
+    <div class="p-row">
+      <div class="p-dot" style="background:#ff6b6b"></div>
+      <input class="p-inp" placeholder="اسم اللاعب الأول" value="عبدالهادي" maxlength="12">
+      <button class="p-del" style="visibility:hidden">×</button>
+    </div>
+    <div class="p-row">
+      <div class="p-dot" style="background:#4ade80"></div>
+      <input class="p-inp" placeholder="اسم اللاعب الثاني" value="محمود" maxlength="12">
+      <button class="p-del" onclick="delPlayer(this)">×</button>
+    </div>
+  </div>
+  <button class="add-p-btn" onclick="addPlayer()">+ إضافة لاعب</button>
+  <button class="comp-go-btn" onclick="startCompete()">⚡ ابدأ التنافس</button>
+  <button class="back-btn" onclick="showScr('home')">← رجوع</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="qhdr">
+    <button class="q-back" onclick="exitQuiz()">←</button>
+    <div class="q-meta">
+      <div class="q-prog-lbl" id="prog-lbl">السؤال ١ من ١٠</div>
+      <div class="q-prog-bar"><div class="q-prog-fill" id="prog-fill" style="width:10%"></div></div>
+    </div>
+    <div class="q-score" id="q-score">٠ نقطة</div>
+    <div class="timer-wrap">
+      <svg width="48" height="48" viewBox="0 0 48 48">
+        <circle class="t-track" cx="24" cy="24" r="20"/>
+        <circle class="t-fill" id="t-fill" cx="24" cy="24" r="20"/>
+      </svg>
+      <div class="t-num" id="t-num">30</div>
+    </div>
+  </div>
+  <div class="buzz-fb" id="buzz-fb"></div>
+  <div class="buzz-bar" id="buzz-bar"></div>
+  <div class="qbody" id="qbody"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQ()">التالي →</button>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <div class="res-hero">
+    <span class="res-trophy" id="r-trophy">🏆</span>
+    <div class="res-title" id="r-title">أحسنت!</div>
+    <div class="res-sub" id="r-sub">انتهت المسابقة</div>
+  </div>
+  <div class="score-ring" id="sr-wrap">
+    <svg width="130" height="130" viewBox="0 0 130 130">
+      <circle class="sr-track" cx="65" cy="65" r="56"/>
+      <circle class="sr-fill" id="sr-fill" cx="65" cy="65" r="56"/>
+    </svg>
+    <div class="sr-num">
+      <span class="sr-big" id="r-score">٠</span>
+      <span class="sr-small" id="r-total">نقطة</span>
+    </div>
+  </div>
+  <div class="lb" id="lb" style="display:none"></div>
+  <button class="again-btn" onclick="playAgain()">🔄 العب مرة أخرى</button>
+  <button class="home-btn" onclick="showScr('home')">العودة للرئيسية</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="install-banner" id="inst-banner">
+  <span style="font-size:26px">📲</span>
+  <div class="inst-text"><strong>ثبّت التطبيق</strong><span>يعمل بدون إنترنت</span></div>
+  <button class="inst-yes" id="inst-btn">تثبيت</button>
+  <button class="inst-no" onclick="document.getElementById('inst-banner').classList.remove('show')">×</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// QUESTION BANK — 320+ questions
+// Format: { q, o:[4 options], a:correct_index(0-3), e:explanation, cat, age:[7,10,13], d:1-3 }
+// ══════════════════════════════════════════════════
+const QB = [
+// ────── RELIGION (age 7) ──────
+{q:"كم عدد أركان الإسلام؟",o:["ثلاثة","أربعة","خمسة","ستة"],a:2,e:"أركان الإسلام خمسة: الشهادتان، والصلاة، والزكاة، والصوم، والحج.",cat:"religion",age:[7],d:1},
+{q:"كم عدد الصلوات المفروضة في اليوم؟",o:["ثلاث","أربع","خمس","ست"],a:2,e:"الصلوات المفروضة خمس: الفجر، والظهر، والعصر، والمغرب، والعشاء.",cat:"religion",age:[7],d:1},
+{q:"ما اسم الكتاب المقدس للمسلمين؟",o:["التوراة","الإنجيل","القرآن الكريم","الزبور"],a:2,e:"القرآن الكريم هو كتاب الله المنزَّل على النبي محمد ﷺ.",cat:"religion",age:[7],d:1},
+{q:"من هو نبي الإسلام؟",o:["موسى","عيسى","إبراهيم","محمد"],a:3,e:"النبي محمد ﷺ هو خاتم الأنبياء والمرسلين.",cat:"religion",age:[7],d:1},
+{q:"في أي شهر يصوم المسلمون؟",o:["شوال","رجب","رمضان","شعبان"],a:2,e:"شهر رمضان هو الشهر التاسع في التقويم الهجري، وفيه فرض الصيام.",cat:"religion",age:[7],d:1},
+{q:"ما عدد ركعات صلاة الفجر؟",o:["ركعة","ركعتان","ثلاث","أربع"],a:1,e:"صلاة الفجر ركعتان فريضة.",cat:"religion",age:[7],d:1},
+{q:"ما معنى كلمة 'الله أكبر'؟",o:["الله واحد","الله أعظم من كل شيء","لا إله إلا الله","الحمد لله"],a:1,e:"'الله أكبر' تعني أن الله أعظم وأكبر من كل شيء في الوجود.",cat:"religion",age:[7],d:1},
+{q:"من هو أول الأنبياء؟",o:["نوح","إبراهيم","آدم","محمد"],a:2,e:"آدم عليه السلام هو أول الأنبياء وأبو البشر.",cat:"religion",age:[7],d:1},
+{q:"كم مرة نصلي في اليوم والليلة؟",o:["ثلاث مرات","أربع مرات","خمس مرات","ست مرات"],a:2,e:"نصلي خمس مرات في اليوم والليلة.",cat:"religion",age:[7],d:1},
+{q:"ما اسم المدينة التي وُلد فيها النبي محمد ﷺ؟",o:["المدينة المنورة","القاهرة","مكة المكرمة","الطائف"],a:2,e:"وُلد النبي محمد ﷺ في مكة المكرمة.",cat:"religion",age:[7],d:1},
+
+// ────── RELIGION (age 10) ──────
+{q:"ما هو الركن الخامس من أركان الإسلام؟",o:["الصلاة","الزكاة","الصوم","الحج"],a:3,e:"الحج إلى بيت الله الحرام هو الركن الخامس، وهو فريضة على كل مسلم مستطيع مرة في العمر.",cat:"religion",age:[10],d:2},
+{q:"كم جزءًا يتكون منه القرآن الكريم؟",o:["٢٠ جزءاً","٢٥ جزءاً","٣٠ جزءاً","٣٦ جزءاً"],a:2,e:"القرآن الكريم يتكون من ٣٠ جزءاً، و١١٤ سورة.",cat:"religion",age:[10],d:2},
+{q:"ما اسم أول سورة في القرآن الكريم؟",o:["البقرة","آل عمران","الفاتحة","الإخلاص"],a:2,e:"سورة الفاتحة هي أول سورة في القرآن وتُسمى أم الكتاب.",cat:"religion",age:[10],d:1},
+{q:"كم عدد آيات سورة الفاتحة؟",o:["٥ آيات","٦ آيات","٧ آيات","٨ آيات"],a:2,e:"سورة الفاتحة تتكون من ٧ آيات.",cat:"religion",age:[10],d:2},
+{q:"ما هي أطول سورة في القرآن الكريم؟",o:["آل عمران","البقرة","النساء","المائدة"],a:1,e:"سورة البقرة هي أطول سور القرآن الكريم، وتحتوي على ٢٨٦ آية.",cat:"religion",age:[10],d:2},
+{q:"كم عدد أنبياء الله المذكورين في القرآن؟",o:["١٨","٢٠","٢٥","٣٠"],a:2,e:"ذُكر في القرآن الكريم ٢٥ نبياً بأسمائهم.",cat:"religion",age:[10],d:2},
+{q:"ما هو اسم ملك الوحي الذي كان ينزل على الأنبياء؟",o:["ميكائيل","إسرافيل","جبريل","عزرائيل"],a:2,e:"جبريل عليه السلام هو أمين الوحي، وكان ينزل بالوحي على الأنبياء.",cat:"religion",age:[10],d:1},
+{q:"في أي مدينة توجد الكعبة المشرفة؟",o:["المدينة المنورة","مكة المكرمة","القدس","الطائف"],a:1,e:"الكعبة المشرفة تقع في مكة المكرمة، وهي أول بيت وُضع للناس.",cat:"religion",age:[10],d:1},
+
+// ────── RELIGION (age 13) ──────
+{q:"ما هو الفرق بين الزكاة والصدقة؟",o:["لا فرق بينهما","الزكاة فريضة بنصاب محدد والصدقة تطوع","الصدقة واجبة والزكاة تطوع","الزكاة للفقراء فقط والصدقة للجميع"],a:1,e:"الزكاة فريضة واجبة بشروط محددة ونصاب معين، أما الصدقة فهي تطوع لا حد لها.",cat:"religion",age:[13],d:3},
+{q:"ما معنى 'التوحيد' في الإسلام؟",o:["الصلاة الجماعية","الإيمان بأن الله واحد لا شريك له","قراءة القرآن يومياً","الصيام في رمضان"],a:1,e:"التوحيد هو إفراد الله بالعبادة والاعتقاد بأنه واحد أحد لا شريك له في ربوبيته وألوهيته وأسمائه وصفاته.",cat:"religion",age:[13],d:2},
+{q:"كم بلغ عمر النبي محمد ﷺ عند وفاته؟",o:["٥٥ سنة","٦٠ سنة","٦٣ سنة","٧٠ سنة"],a:2,e:"توفي النبي محمد ﷺ عن عمر ٦٣ سنة في المدينة المنورة.",cat:"religion",age:[13],d:2},
+{q:"ما هي الهجرة النبوية وإلى أين كانت؟",o:["من المدينة إلى مكة","من مكة إلى المدينة المنورة","من مكة إلى الطائف","من المدينة إلى الشام"],a:1,e:"الهجرة النبوية كانت من مكة المكرمة إلى المدينة المنورة عام ٦٢٢م، وهي بداية التقويم الهجري.",cat:"religion",age:[13],d:2},
+
+// ────── QURAN (age 7) ──────
+{q:"ماذا نقول عند بدء قراءة القرآن؟",o:["الحمد لله","سبحان الله","بسم الله الرحمن الرحيم","لا إله إلا الله"],a:2,e:"نبدأ قراءة القرآن بـ'بسم الله الرحمن الرحيم'.",cat:"quran",age:[7],d:1},
+{q:"كم عدد سور القرآن الكريم؟",o:["١٠٠","١١٠","١١٤","١٢٠"],a:2,e:"القرآن الكريم يحتوي على ١١٤ سورة.",cat:"quran",age:[7],d:1},
+{q:"ما اسم آخر سورة في القرآن؟",o:["الفلق","الناس","الكوثر","الإخلاص"],a:1,e:"آخر سورة في القرآن الكريم هي سورة الناس.",cat:"quran",age:[7],d:2},
+{q:"من نزّل عليه القرآن الكريم؟",o:["موسى","عيسى","إبراهيم","محمد ﷺ"],a:3,e:"نزل القرآن الكريم على سيدنا محمد ﷺ بواسطة جبريل عليه السلام.",cat:"quran",age:[7],d:1},
+{q:"في أي شهر بدأ نزول القرآن الكريم؟",o:["رجب","شعبان","رمضان","ذو الحجة"],a:2,e:"بدأ نزول القرآن في شهر رمضان المبارك في ليلة القدر.",cat:"quran",age:[7],d:2},
+{q:"ما اسم أقصر سورة في القرآن؟",o:["الناس","الفلق","الكوثر","الإخلاص"],a:2,e:"سورة الكوثر هي أقصر سور القرآن وتتكون من ٣ آيات فقط.",cat:"quran",age:[7],d:2},
+
+// ────── QURAN (age 10) ──────
+{q:"ما المقصود بـ'آية الكرسي'؟",o:["أول آية في البقرة","آية ٢٥٥ من سورة البقرة","آخر آية في القرآن","آية من سورة آل عمران"],a:1,e:"آية الكرسي هي الآية ٢٥٥ من سورة البقرة، وهي من أعظم آيات القرآن الكريم.",cat:"quran",age:[10],d:2},
+{q:"ما اسم السورة التي تُعادل ثلث القرآن؟",o:["الفاتحة","الإخلاص","الكوثر","الفلق"],a:1,e:"سورة الإخلاص تعادل ثلث القرآن لاشتمالها على توحيد الله الخالص.",cat:"quran",age:[10],d:2},
+{q:"كم عدد آيات القرآن الكريم تقريباً؟",o:["٤٠٠٠","٥٠٠٠","٦٢٣٦","٨٠٠٠"],a:2,e:"يحتوي القرآن الكريم على ٦٢٣٦ آية (بحسب أشهر العدّات).",cat:"quran",age:[10],d:3},
+{q:"ما اسم السورة التي تبدأ بـ'قل هو الله أحد'؟",o:["الفاتحة","الناس","الإخلاص","الفلق"],a:2,e:"سورة الإخلاص تبدأ بـ'قل هو الله أحد' وهي تؤكد وحدانية الله.",cat:"quran",age:[10],d:1},
+
+// ────── ANIMALS (age 7) ──────
+{q:"ما هو أكبر حيوان بري في العالم؟",o:["الزرافة","الفيل الأفريقي","وحيد القرن","فرس النهر"],a:1,e:"الفيل الأفريقي هو أكبر الحيوانات البرية، ويمكن أن يزن أكثر من ٧ أطنان.",cat:"animals",age:[7],d:1},
+{q:"كم عدد أرجل الحشرات؟",o:["أربعة","ستة","ثمانية","اثنان"],a:1,e:"جميع الحشرات لها ٦ أرجل — هذه من أهم صفاتها.",cat:"animals",age:[7],d:1},
+{q:"ما الحيوان الذي يُعرف بـ'ملك الغابة'؟",o:["النمر","الفهد","الأسد","الضبع"],a:2,e:"الأسد يُلقّب بـ'ملك الغابة' لقوته وهيبته.",cat:"animals",age:[7],d:1},
+{q:"ماذا يأكل الأرنب؟",o:["اللحوم","الأسماك","الخضروات والعشب","الحشرات"],a:2,e:"الأرنب حيوان عاشب يتغذى على الخضروات والعشب والجزر.",cat:"animals",age:[7],d:1},
+{q:"أي حيوان يعيش في القطب الشمالي؟",o:["الدب القطبي","الأسد","الزرافة","التمساح"],a:0,e:"الدب القطبي يعيش في المناطق الباردة جداً حول القطب الشمالي.",cat:"animals",age:[7],d:1},
+{q:"ما أسرع حيوان في العالم؟",o:["الأسد","الفهد","النمر","الحصان"],a:1,e:"الفهد هو أسرع حيوان بري، يصل إلى ١١٢ كم/ساعة.",cat:"animals",age:[7],d:1},
+{q:"كم عدد أرجل العنكبوت؟",o:["٤","٦","٨","١٠"],a:2,e:"العنكبوت ليس حشرة، له ٨ أرجل وينتمي لفصيلة العنكبيات.",cat:"animals",age:[7],d:2},
+{q:"ما الحيوان الذي يحمل بيته على ظهره؟",o:["السلحفاة","الحلزون","السرطان","الضفدع"],a:1,e:"الحلزون يحمل صدفته على ظهره وهي بيته وحمايته.",cat:"animals",age:[7],d:1},
+{q:"أي حيوان ينام أطول وقت في الشتاء؟",o:["الأرنب","الثعلب","الدب","الذئب"],a:2,e:"الدب يدخل في سبات شتوي عميق يمتد لعدة أشهر.",cat:"animals",age:[7],d:2},
+{q:"ما اسم صغير الأسد؟",o:["جرو","عجل","شبل","فصيل"],a:2,e:"صغير الأسد يُسمى الشِّبل.",cat:"animals",age:[7],d:2},
+
+// ────── ANIMALS (age 10) ──────
+{q:"ما أكبر حيوان في المحيطات؟",o:["القرش الأبيض","الحوت الأزرق","حبار عملاق","أبو سيف"],a:1,e:"الحوت الأزرق هو أكبر حيوان على وجه الأرض، يصل طوله إلى ٣٠ متراً.",cat:"animals",age:[10],d:1},
+{q:"كيف تتنفس الأسماك تحت الماء؟",o:["برئتيها","بالخياشيم","بجلدها","لا تحتاج أكسجين"],a:1,e:"تتنفس الأسماك بالخياشيم التي تستخرج الأكسجين المذاب في الماء.",cat:"animals",age:[10],d:1},
+{q:"ما الحيوان الذي يستطيع تغيير لونه؟",o:["الحرباء","الضب","الورل","الوزغ"],a:0,e:"الحرباء تغير لونها للتمويه وللتعبير عن مزاجها ودرجة حرارتها.",cat:"animals",age:[10],d:1},
+{q:"ما أطول حيوان في العالم؟",o:["الزرافة","الفيل","الفرس","الجمل"],a:0,e:"الزرافة هي أطول الحيوانات، يصل ارتفاعها إلى ٦ أمتار.",cat:"animals",age:[10],d:1},
+{q:"كم عدد أسنان الفيل البالغ؟",o:["٢٠","٢٦","٣٢","٤٠"],a:1,e:"الفيل البالغ لديه ٢٦ سناً بما فيها النابان.",cat:"animals",age:[10],d:3},
+{q:"ما الحيوان الوحيد الذي ينام واقفاً؟",o:["الزرافة","الفرس","الجمل","الثور"],a:1,e:"الخيل (الفرس) تستطيع النوم واقفةً بفضل آلية تثبيت الركبة.",cat:"animals",age:[10],d:2},
+{q:"ما أذكى الحيوانات البرية؟",o:["الكلب","الفيل","الشمبانزي","الدلفين"],a:2,e:"الشمبانزي هو أقرب الحيوانات للإنسان جينياً وأذكاها، يليه الدلفين والفيل.",cat:"animals",age:[10],d:2},
+
+// ────── ANIMALS (age 13) ──────
+{q:"ما الفرق بين الحيوانات الثديية والزواحف؟",o:["الثديية تبيض والزواحف تلد","الثديية ذات دم حار والزواحف ذات دم بارد","الزواحف لها شعر والثديية لها حراشف","لا فرق بينهما"],a:1,e:"الثديية ذات دم حار تنظم حرارتها داخلياً، بينما الزواحف ذات دم بارد تعتمد على بيئتها للحرارة.",cat:"animals",age:[13],d:2},
+{q:"ما ظاهرة 'المحاكاة' في الحيوانات؟",o:["الانتقال من بيئة لأخرى","تقليد حيوان لحيوان خطر لحماية نفسه","الهجرة الموسمية","الصيد الجماعي"],a:1,e:"المحاكاة هي تقليد حيوان غير ضار لمظهر حيوان خطير ليحمي نفسه من المفترسات.",cat:"animals",age:[13],d:3},
+{q:"كيف يحدد الخفاش موقع فريسته في الظلام؟",o:["بالرؤية الليلية","بالصدى الصوتي (الرادار الحيوي)","برائحة قوية","بالإحساس بالحرارة"],a:1,e:"الخفاش يُطلق موجات صوتية عالية التردد تنعكس عن الأجسام فيحدد موقعها — يُسمى هذا الرادار الحيوي أو echolocation.",cat:"animals",age:[13],d:2},
+
+// ────── SCIENCE (age 7) ──────
+{q:"ما اللون الذي تمتصه النباتات من الشمس لتصنع غذاءها؟",o:["الأحمر فقط","الأزرق فقط","الضوء الشمسي بشكل عام","الأسود"],a:2,e:"النباتات تمتص الضوء الشمسي وتستخدمه في عملية البناء الضوئي لصنع غذائها.",cat:"science",age:[7],d:1},
+{q:"ما أكبر كوكب في المجموعة الشمسية؟",o:["الأرض","زحل","المشتري","أورانوس"],a:2,e:"المشتري هو أكبر كوكب في المجموعة الشمسية، حجمه يساوي ١٣٠٠ مرة حجم الأرض.",cat:"science",age:[7],d:1},
+{q:"ما لون الدم في جسم الإنسان؟",o:["أزرق","أصفر","أحمر","بنفسجي"],a:2,e:"الدم أحمر اللون بسبب مادة الهيموجلوبين التي تحمل الأكسجين.",cat:"science",age:[7],d:1},
+{q:"كم عدد ألوان قوس قزح؟",o:["٥","٦","٧","٨"],a:2,e:"قوس قزح يتكون من ٧ ألوان: أحمر، برتقالي، أصفر، أخضر، أزرق، نيلي، بنفسجي.",cat:"science",age:[7],d:1},
+{q:"ما الذي يدور حول الأرض؟",o:["الشمس","القمر","المريخ","زحل"],a:1,e:"القمر هو التابع الطبيعي للأرض ويدور حولها.",cat:"science",age:[7],d:1},
+{q:"ماذا تحتاج النباتات لتعيش؟",o:["الماء فقط","الضوء فقط","الماء والضوء والتربة","الظلام والماء"],a:2,e:"تحتاج النباتات للماء والضوء والتربة وثاني أكسيد الكربون لتعيش وتنمو.",cat:"science",age:[7],d:1},
+{q:"ما حالة الماء عند التجمد؟",o:["سائلة","غازية","صلبة","بلازما"],a:2,e:"عند درجة صفر مئوية يتحول الماء من السائل إلى الجليد وهو حالة صلبة.",cat:"science",age:[7],d:1},
+{q:"كم عدد كواكب المجموعة الشمسية؟",o:["٦","٧","٨","٩"],a:2,e:"يوجد ٨ كواكب في المجموعة الشمسية منذ خرج بلوتو من قائمة الكواكب عام ٢٠٠٦.",cat:"science",age:[7],d:2},
+
+// ────── SCIENCE (age 10) ──────
+{q:"ما العضو المسؤول عن ضخ الدم في الجسم؟",o:["الرئة","الكبد","القلب","الكلية"],a:2,e:"القلب هو المضخة الرئيسية للدورة الدموية، يضخ الدم في الجسم كله.",cat:"science",age:[10],d:1},
+{q:"ما الغاز الأكثر وفرةً في الهواء؟",o:["الأكسجين","ثاني أكسيد الكربون","النيتروجين","الهيدروجين"],a:2,e:"النيتروجين يشكل ٧٨٪ من الهواء، بينما الأكسجين يشكل ٢١٪ فقط.",cat:"science",age:[10],d:2},
+{q:"ما عملية تحول النبات للضوء إلى غذاء؟",o:["التنفس","البناء الضوئي","التخمر","الهضم"],a:1,e:"البناء الضوئي (التركيب الضوئي) هو عملية تحويل ثاني أكسيد الكربون والماء والضوء إلى سكر وأكسجين.",cat:"science",age:[10],d:1},
+{q:"ما أقرب نجم إلى الأرض؟",o:["الشعرى اليمانية","القطب الشمالي","الشمس","بروكسيما سنتوري"],a:2,e:"الشمس هي أقرب نجم إلينا، تبعد عنا حوالي ١٥٠ مليون كيلومتر.",cat:"science",age:[10],d:2},
+{q:"كم تستغرق الأرض للدوران حول الشمس؟",o:["٢٤ ساعة","٣٠ يوماً","٣٦٥ يوماً","١٢ سنة"],a:2,e:"تدور الأرض حول الشمس في ٣٦٥ يوماً و٦ ساعات تقريباً — وهذا سبب السنة الكبيسة.",cat:"science",age:[10],d:1},
+{q:"ما وحدة قياس الكهرباء؟",o:["متر","كيلوغرام","أمبير","ثانية"],a:2,e:"الأمبير هو وحدة قياس شدة التيار الكهربائي.",cat:"science",age:[10],d:2},
+{q:"ما الجهاز الذي يقيس درجة الحرارة؟",o:["البارومتر","المنظار","الميزان","الترمومتر"],a:3,e:"الترمومتر هو جهاز قياس درجة الحرارة.",cat:"science",age:[10],d:1},
+
+// ────── SCIENCE (age 13) ──────
+{q:"ما قانون نيوتن الأول؟",o:["F=ma","قانون الجاذبية","قانون القصور الذاتي - الجسم يبقى على حاله إذا لم تؤثر عليه قوة","لكل فعل رد فعل مساوٍ ومعاكس"],a:2,e:"قانون القصور الذاتي: الجسم الساكن يبقى ساكناً والمتحرك يبقى متحركاً بخط مستقيم ما لم تؤثر عليه قوة خارجية.",cat:"science",age:[13],d:2},
+{q:"ما الوحدة الأساسية للمادة الحية؟",o:["الجزيء","الذرة","الخلية","البروتين"],a:2,e:"الخلية هي الوحدة البنائية والوظيفية الأساسية لجميع الكائنات الحية.",cat:"science",age:[13],d:1},
+{q:"ما رمز الذهب في الجدول الدوري؟",o:["Go","Gd","Au","Ag"],a:2,e:"رمز الذهب في الجدول الدوري هو Au من الكلمة اللاتينية Aurum.",cat:"science",age:[13],d:2},
+{q:"ما سرعة الضوء في الفراغ تقريباً؟",o:["١٠٠ ألف كم/ث","٣٠٠ ألف كم/ث","٦٠٠ ألف كم/ث","مليون كم/ث"],a:1,e:"سرعة الضوء في الفراغ تقريباً ٣٠٠,٠٠٠ كم/ثانية — وهي أعلى سرعة ممكنة في الكون.",cat:"science",age:[13],d:2},
+{q:"ما نظرية التطور ولمن تُنسب؟",o:["نيوتن — الجاذبية","داروين — الانتخاب الطبيعي","أينشتاين — النسبية","باستور — الجراثيم"],a:1,e:"نظرية التطور لـ تشارلز داروين تقول إن الأنواع تتطور بالانتخاب الطبيعي حيث ينجو الأصلح.",cat:"science",age:[13],d:2},
+
+// ────── GEOGRAPHY (age 7) ──────
+{q:"ما عاصمة المملكة العربية السعودية؟",o:["جدة","مكة","الرياض","الدمام"],a:2,e:"الرياض هي عاصمة المملكة العربية السعودية.",cat:"geography",age:[7],d:1},
+{q:"ما أكبر المحيطات؟",o:["الأطلسي","الهندي","المتجمد الشمالي","الهادي"],a:3,e:"المحيط الهادي (الباسيفيكي) هو أكبر المحيطات، ويغطي أكثر من ثلث سطح الأرض.",cat:"geography",age:[7],d:1},
+{q:"على أي قارة تقع مصر؟",o:["آسيا","أوروبا","أفريقيا","أمريكا"],a:2,e:"مصر تقع في شمال أفريقيا، وجزء صغير منها (سيناء) في آسيا.",cat:"geography",age:[7],d:1},
+{q:"ما أطول نهر في العالم؟",o:["الأمازون","النيل","الكونغو","المسيسيبي"],a:1,e:"نهر النيل هو أطول أنهار العالم، يمتد لأكثر من ٦٦٥٠ كيلومتراً.",cat:"geography",age:[7],d:1},
+{q:"كم عدد قارات العالم؟",o:["٥","٦","٧","٨"],a:2,e:"قارات العالم السبع هي: آسيا، أفريقيا، أمريكا الشمالية، أمريكا الجنوبية، أوروبا، أستراليا، القطب الجنوبي.",cat:"geography",age:[7],d:1},
+{q:"ما عاصمة مصر؟",o:["الإسكندرية","القاهرة","أسوان","الأقصر"],a:1,e:"القاهرة هي عاصمة جمهورية مصر العربية وأكبر مدنها.",cat:"geography",age:[7],d:1},
+
+// ────── GEOGRAPHY (age 10) ──────
+{q:"ما أعلى قمة جبلية في العالم؟",o:["K2","كليمنجارو","إيفرست","الانديز"],a:2,e:"قمة إيفرست في جبال الهيمالايا هي أعلى قمة في العالم بارتفاع ٨٨٤٨ متراً.",cat:"geography",age:[10],d:1},
+{q:"ما أكبر دولة في العالم مساحةً؟",o:["الصين","كندا","الولايات المتحدة","روسيا"],a:3,e:"روسيا هي أكبر دولة في العالم مساحةً، تقع في أوروبا وآسيا.",cat:"geography",age:[10],d:1},
+{q:"ما عاصمة فرنسا؟",o:["برلين","مدريد","باريس","روما"],a:2,e:"باريس عاصمة فرنسا وأكبر مدنها.",cat:"geography",age:[10],d:1},
+{q:"ما اسم البحر الذي يفصل بين أفريقيا وأوروبا؟",o:["البحر الأحمر","البحر الأسود","البحر المتوسط","بحر العرب"],a:2,e:"البحر المتوسط يفصل بين القارتين الأفريقية والأوروبية.",cat:"geography",age:[10],d:1},
+{q:"في أي قارة تقع البرازيل؟",o:["أمريكا الشمالية","أوروبا","أفريقيا","أمريكا الجنوبية"],a:3,e:"البرازيل تقع في أمريكا الجنوبية وهي أكبر دولة فيها.",cat:"geography",age:[10],d:1},
+{q:"ما البلد الذي يُعرف بـ'بلد الشمس المشرقة'؟",o:["الصين","كوريا","اليابان","تايوان"],a:2,e:"اليابان تُعرف بـ'بلد الشمس المشرقة' لأنها من أول البلدان التي تشرق عليها الشمس.",cat:"geography",age:[10],d:1},
+
+// ────── GEOGRAPHY (age 13) ──────
+{q:"ما خط الاستواء ولماذا هو مهم؟",o:["خط يمر بالقطبين","خط وهمي يقسم الأرض نصفين: شمالي وجنوبي","خط يمر بلندن","خط الطول الصفري"],a:1,e:"خط الاستواء دائرة عظمى تقسم الكرة الأرضية إلى نصف كرة شمالي وجنوبي، وعنده تتساوى ساعات الليل والنهار طوال العام.",cat:"geography",age:[13],d:2},
+{q:"ما أكبر صحراء في العالم؟",o:["الصحراء الكبرى في أفريقيا","صحراء الربع الخالي","صحراء القطب الجنوبي (أنتاركتيكا)","صحراء غوبي"],a:2,e:"صحراء القطب الجنوبي (أنتاركتيكا) هي أكبر الصحاري، وهي صحراء قطبية باردة.",cat:"geography",age:[13],d:3},
+{q:"ما الفرق بين المناخ والطقس؟",o:["لا فرق بينهما","الطقس حالة الجو اليومية والمناخ النمط العام على مدى سنوات","المناخ أسرع تغيراً من الطقس","الطقس يقاس لسنوات والمناخ يومياً"],a:1,e:"الطقس هو حالة الجو في يوم معين (مطر، غيوم، حرارة)، بينما المناخ هو النمط العام للطقس على مدى عشرات السنين.",cat:"geography",age:[13],d:2},
+
+// ────── HISTORY (age 7) ──────
+{q:"من بنى الأهرامات؟",o:["الرومان","الفراعنة المصريون","العرب","الإغريق"],a:1,e:"الأهرامات بناها الفراعنة المصريون القدماء كمقابر لملوكهم.",cat:"history",age:[7],d:1},
+{q:"ما اسم أشهر هرم في مصر؟",o:["هرم منقرع","هرم خفرع","هرم خوفو (الهرم الأكبر)","هرم زوسر"],a:2,e:"هرم خوفو (الهرم الأكبر) في الجيزة هو الأكبر وأحد عجائب الدنيا السبع.",cat:"history",age:[7],d:1},
+{q:"من هو مكتشف أمريكا؟",o:["ماجلان","كولومبوس","فاسكو دي جاما","ابن بطوطة"],a:1,e:"كريستوفر كولومبوس وصل إلى أمريكا عام ١٤٩٢م.",cat:"history",age:[7],d:2},
+{q:"ماذا كان يُسمى الحاكم في مصر القديمة؟",o:["الملك","الإمبراطور","الفرعون","السلطان"],a:2,e:"كان حاكم مصر القديمة يُسمى الفرعون وكان يُعدّ إلهاً عند المصريين القدماء.",cat:"history",age:[7],d:1},
+
+// ────── HISTORY (age 10) ──────
+{q:"متى فُتحت مكة المكرمة على يد النبي محمد ﷺ؟",o:["في السنة الخامسة الهجرية","في السنة الثامنة الهجرية","في السنة العاشرة الهجرية","في السنة الثالثة"],a:1,e:"فُتحت مكة المكرمة في السنة الثامنة للهجرة النبوية.",cat:"history",age:[10],d:2},
+{q:"من هو صلاح الدين الأيوبي؟",o:["ملك مصري قديم","قائد عسكري حرر القدس من الصليبيين","فيلسوف عربي","شاعر أندلسي"],a:1,e:"صلاح الدين الأيوبي قائد عسكري مسلم من القرن الثاني عشر حرّر القدس من الصليبيين عام ١١٨٧م.",cat:"history",age:[10],d:1},
+{q:"في أي عام تأسست المملكة العربية السعودية رسمياً؟",o:["١٩٠٢","١٩٢٥","١٩٣٢","١٩٤٥"],a:2,e:"أُعلن قيام المملكة العربية السعودية رسمياً في ٢٣ سبتمبر ١٩٣٢م على يد الملك عبدالعزيز آل سعود.",cat:"history",age:[10],d:2},
+{q:"ما الحضارة التي اخترعت الكتابة أول مرة؟",o:["المصريون","الفينيقيون","السومريون","الرومان"],a:2,e:"يُعتقد أن السومريين في بلاد الرافدين (العراق) هم أول من اخترع الكتابة المسمارية قبل ٣٠٠٠ سنة.",cat:"history",age:[10],d:3},
+
+// ────── HISTORY (age 13) ──────
+{q:"ما أسباب سقوط الدولة العباسية؟",o:["الغزو الفرنسي","غزو المغول بقيادة هولاكو عام ١٢٥٨م","الثورة الداخلية","الكوارث الطبيعية"],a:1,e:"سقطت الدولة العباسية عام ١٢٥٨م حين غزا المغول بقيادة هولاكو بغداد وقتلوا آخر خلفائها.",cat:"history",age:[13],d:2},
+{q:"ما مدة الحكم الإسلامي في الأندلس (إسبانيا)؟",o:["١٠٠ سنة","٣٠٠ سنة","٨٠٠ سنة","٥٠ سنة"],a:2,e:"حكم المسلمون الأندلس قرابة ٨٠٠ سنة من ٧١١م حتى سقوط غرناطة عام ١٤٩٢م.",cat:"history",age:[13],d:2},
+{q:"من كان أبو القانون في الطب؟",o:["الرازي","البيروني","ابن سينا","ابن النفيس"],a:2,e:"ابن سينا (980-1037م) طبيب وفيلسوف مسلم، كتابه 'القانون في الطب' ظل مرجعاً في أوروبا قروناً.",cat:"history",age:[13],d:2},
+
+// ────── ARABIC (age 7) ──────
+{q:"كم حرفاً في الأبجدية العربية؟",o:["٢٤","٢٦","٢٨","٣٠"],a:2,e:"الأبجدية العربية تتكون من ٢٨ حرفاً.",cat:"arabic",age:[7],d:1},
+{q:"ما مفرد كلمة 'كتب'؟",o:["كتيب","كتاب","مكتبة","كاتب"],a:1,e:"مفرد 'كتب' هو 'كتاب'.",cat:"arabic",age:[7],d:1},
+{q:"ما جمع كلمة 'بيت'؟",o:["بيتات","بيوت","أبيات","بيتون"],a:1,e:"جمع 'بيت' هو 'بيوت'.",cat:"arabic",age:[7],d:1},
+{q:"ما ضد كلمة 'كبير'؟",o:["طويل","ثقيل","صغير","قوي"],a:2,e:"ضد 'كبير' هو 'صغير'.",cat:"arabic",age:[7],d:1},
+{q:"أي هذه الكلمات اسم؟",o:["يركض","جميل","الكتاب","كتب"],a:2,e:"'الكتاب' اسم لأنه يدل على شيء محسوس، أما الباقي فأفعال وصفات.",cat:"arabic",age:[7],d:2},
+{q:"ما مؤنث كلمة 'طالب'؟",o:["مطلوبة","طالبة","طلّابة","مطلوب"],a:1,e:"مؤنث 'طالب' هو 'طالبة'.",cat:"arabic",age:[7],d:1},
+
+// ────── ARABIC (age 10) ──────
+{q:"ما الفرق بين الفعل المتعدي واللازم؟",o:["المتعدي أطول من اللازم","المتعدي يحتاج مفعولاً به واللازم لا يحتاجه","لا فرق بينهما","اللازم يحتاج مفعولاً والمتعدي لا"],a:1,e:"الفعل المتعدي يحتاج مفعولاً به ليتم معناه (قرأ الولدُ الكتابَ)، واللازم لا يحتاجه (نام الطفلُ).",cat:"arabic",age:[10],d:2},
+{q:"ما معنى 'الإعراب' في اللغة العربية؟",o:["الترجمة إلى العربية","تحديد حركة آخر الكلمة وعلامتها الإعرابية","قواعد الهجاء","الكتابة بخط جميل"],a:1,e:"الإعراب هو تغيير آخر الكلمة بسبب تغيير موقعها في الجملة (رفع، نصب، جر، جزم).",cat:"arabic",age:[10],d:2},
+{q:"ما جمع كلمة 'مدرسة'؟",o:["مدارس","مدرسات","مدرسون","الدراسة"],a:0,e:"جمع 'مدرسة' هو 'مدارس' على وزن مفاعل.",cat:"arabic",age:[10],d:1},
+{q:"ما الاسم المعرّف في العربية؟",o:["الاسم المنتهي بالتاء المربوطة","الاسم الذي يبدأ بـ 'ال'","الاسم الطويل","الاسم الأجنبي"],a:1,e:"يُعرَّف الاسم في العربية بإضافة 'ال' التعريف في أوله مثل: كتاب → الكتاب.",cat:"arabic",age:[10],d:1},
+
+// ────── ARABIC (age 13) ──────
+{q:"ما أركان الجملة الاسمية؟",o:["فعل وفاعل","مبتدأ وخبر","فاعل ومفعول به","مضاف ومضاف إليه"],a:1,e:"الجملة الاسمية تتكون من مبتدأ وخبر، كقولنا: 'العلمُ نورٌ'.",cat:"arabic",age:[13],d:2},
+{q:"ما الفرق بين الضمة والفتحة والكسرة؟",o:["الضمة رفع، الفتحة نصب، الكسرة جر","الفتحة رفع، الكسرة نصب، الضمة جر","الكسرة رفع، الضمة جر، الفتحة نصب","لا فرق بينها"],a:0,e:"في الإعراب: الضمة علامة الرفع، والفتحة علامة النصب، والكسرة علامة الجر.",cat:"arabic",age:[13],d:2},
+{q:"ما معنى 'البلاغة' في اللغة العربية؟",o:["الكتابة السريعة","إيصال المعنى بأسلوب جميل ومناسب للمقام","الترجمة","حفظ القرآن"],a:1,e:"البلاغة فن إيصال المعنى المقصود بأسلوب جميل وواضح ومناسب للمقام والمقال.",cat:"arabic",age:[13],d:2},
+
+// ────── MATH (age 7) ──────
+{q:"كم يساوي ٥ + ٣؟",o:["٧","٨","٩","١٠"],a:1,e:"٥ + ٣ = ٨",cat:"math",age:[7],d:1},
+{q:"كم يساوي ١٠ - ٤؟",o:["٥","٦","٧","٨"],a:1,e:"١٠ - ٤ = ٦",cat:"math",age:[7],d:1},
+{q:"كم يساوي ٢ × ٦؟",o:["١٠","١١","١٢","١٤"],a:2,e:"٢ × ٦ = ١٢",cat:"math",age:[7],d:1},
+{q:"كم يساوي ٢٠ ÷ ٤؟",o:["٤","٥","٦","٧"],a:1,e:"٢٠ ÷ ٤ = ٥",cat:"math",age:[7],d:1},
+{q:"ما عدد أضلاع المثلث؟",o:["٢","٣","٤","٥"],a:1,e:"المثلث له ٣ أضلاع و٣ زوايا.",cat:"math",age:[7],d:1},
+{q:"ما عدد أضلاع المربع؟",o:["٣","٤","٥","٦"],a:1,e:"المربع له ٤ أضلاع متساوية و٤ زوايا قائمة.",cat:"math",age:[7],d:1},
+{q:"كم يساوي ٧ × ٧؟",o:["٤٢","٤٨","٤٩","٥٦"],a:2,e:"٧ × ٧ = ٤٩",cat:"math",age:[7],d:2},
+{q:"أي عدد أكبر: ٣٥ أم ٥٣؟",o:["٣٥","٥٣","متساويان","لا يمكن تحديد"],a:1,e:"٥٣ أكبر من ٣٥ لأن رقم العشرات فيه (٥) أكبر.",cat:"math",age:[7],d:1},
+
+// ────── MATH (age 10) ──────
+{q:"كم يساوي ١٢ × ١٢؟",o:["١٣٢","١٤٤","١٢٠","١٥٦"],a:1,e:"١٢ × ١٢ = ١٤٤",cat:"math",age:[10],d:2},
+{q:"ما نتيجة ١٥٠ ÷ ٥؟",o:["٢٥","٣٠","٣٥","٤٠"],a:1,e:"١٥٠ ÷ ٥ = ٣٠",cat:"math",age:[10],d:1},
+{q:"ما قيمة π (باي) تقريباً؟",o:["٢.٧٢","٣.١٤","٣.٧٨","٤.٠٠"],a:1,e:"π ≈ ٣.١٤ وهي نسبة محيط الدائرة إلى قطرها.",cat:"math",age:[10],d:2},
+{q:"كم يساوي ٢³ (٢ أس ٣)؟",o:["٦","٨","٩","١٢"],a:1,e:"٢³ = ٢ × ٢ × ٢ = ٨",cat:"math",age:[10],d:2},
+{q:"ما مجموع زوايا المثلث؟",o:["٩٠ درجة","١٨٠ درجة","٢٧٠ درجة","٣٦٠ درجة"],a:1,e:"مجموع زوايا أي مثلث يساوي ١٨٠ درجة دائماً.",cat:"math",age:[10],d:1},
+{q:"ما نتيجة ٢٥٪ من ٢٠٠؟",o:["٢٥","٤٠","٥٠","٧٥"],a:2,e:"٢٥٪ من ٢٠٠ = (٢٥/١٠٠) × ٢٠٠ = ٥٠",cat:"math",age:[10],d:2},
+
+// ────── MATH (age 13) ──────
+{q:"ما قيمة √١٦٩؟",o:["١١","١٢","١٣","١٤"],a:2,e:"√١٦٩ = ١٣ لأن ١٣ × ١٣ = ١٦٩",cat:"math",age:[13],d:2},
+{q:"إذا كان x + ٥ = ١٢، فما قيمة x؟",o:["٥","٦","٧","٨"],a:2,e:"x + ٥ = ١٢ ← x = ١٢ - ٥ = ٧",cat:"math",age:[13],d:1},
+{q:"ما نتيجة ٣ × (٤ + ٢) - ١؟",o:["١٥","١٦","١٧","١٨"],a:2,e:"نبدأ بالقوس: ٤+٢=٦، ثم ٣×٦=١٨، ثم ١٨-١=١٧",cat:"math",age:[13],d:2},
+{q:"كم يساوي ٢⁸ (٢ أس ٨)؟",o:["١٢٨","٢٥٦","٥١٢","١٠٢٤"],a:1,e:"٢⁸ = ٢٥٦ وهو الرقم الأساسي في علم الحاسوب.",cat:"math",age:[13],d:3},
+
+// ────── GENERAL (age 7) ──────
+{q:"ما لون العلم السعودي؟",o:["أحمر وأبيض","أخضر وأبيض","أزرق وأبيض","أصفر وأخضر"],a:1,e:"العلم السعودي أخضر اللون مع كتابة الشهادة وسيف أبيض.",cat:"general",age:[7],d:1},
+{q:"كم يوماً في الأسبوع؟",o:["٥","٦","٧","٨"],a:2,e:"الأسبوع سبعة أيام.",cat:"general",age:[7],d:1},
+{q:"كم ساعة في اليوم؟",o:["١٢","١٦","٢٤","٤٨"],a:2,e:"اليوم يحتوي على ٢٤ ساعة.",cat:"general",age:[7],d:1},
+{q:"ما اليوم الذي يأتي بعد الأربعاء؟",o:["الثلاثاء","الخميس","الجمعة","الأحد"],a:1,e:"الخميس يأتي بعد الأربعاء.",cat:"general",age:[7],d:1},
+{q:"ما عدد أشهر السنة؟",o:["١٠","١١","١٢","١٣"],a:2,e:"السنة ١٢ شهراً.",cat:"general",age:[7],d:1},
+{q:"كم يوماً في شهر يناير؟",o:["٢٨","٢٩","٣٠","٣١"],a:3,e:"يناير شهر كامل له ٣١ يوماً.",cat:"general",age:[7],d:2},
+
+// ────── GENERAL (age 10) ──────
+{q:"ما أكبر مدينة في العالم من حيث عدد السكان؟",o:["نيويورك","شنغهاي","طوكيو","القاهرة"],a:2,e:"طوكيو عاصمة اليابان هي أكبر مدن العالم من حيث عدد السكان.",cat:"general",age:[10],d:2},
+{q:"من اخترع الهاتف؟",o:["توماس إديسون","ألكسندر غراهام بيل","نيكولا تيسلا","ماركوني"],a:1,e:"اخترع ألكسندر غراهام بيل الهاتف عام ١٨٧٦م.",cat:"general",age:[10],d:1},
+{q:"من اخترع المصباح الكهربائي؟",o:["غراهام بيل","ألبرت أينشتاين","توماس إديسون","نيوتن"],a:2,e:"اخترع توماس إديسون المصباح الكهربائي عام ١٨٧٩م.",cat:"general",age:[10],d:1},
+{q:"ما لغة الحاسوب الأولى؟",o:["Java","Python","FORTRAN","C++"],a:2,e:"فورتران (FORTRAN) هي واحدة من أقدم لغات البرمجة، طُوِّرت في الخمسينيات.",cat:"general",age:[10],d:3},
+{q:"ما عدد ألوان الطيف الضوئي؟",o:["٥","٦","٧","٨"],a:2,e:"ألوان الطيف الضوئي (قوس قزح) سبعة: أحمر، برتقالي، أصفر، أخضر، أزرق، نيلي، بنفسجي.",cat:"general",age:[10],d:1},
+
+// ────── GENERAL (age 13) ──────
+{q:"ما الذكاء الاصطناعي؟",o:["جهاز كمبيوتر عادي","تقنية تُمكّن الآلات من محاكاة التفكير البشري","نوع من الروبوتات","لغة برمجة"],a:1,e:"الذكاء الاصطناعي هو فرع من علم الحاسوب يهدف إلى تمكين الآلات من التعلم والتفكير وحل المشكلات.",cat:"general",age:[13],d:2},
+{q:"ما الفرق بين الطاقة المتجددة وغير المتجددة؟",o:["لا فرق","المتجددة تتجدد طبيعياً كالشمس والرياح، وغير المتجددة تنضب كالنفط","المتجددة أغلى دائماً","غير المتجددة أنظف"],a:1,e:"الطاقة المتجددة (شمس، رياح، ماء) تتجدد بشكل طبيعي، بينما غير المتجددة (نفط، غاز، فحم) تنضب ولا تتجدد.",cat:"general",age:[13],d:2},
+{q:"ما الإنترنت ومن طوّره؟",o:["اخترعه بيل غيتس وحده","شبكة عالمية للتواصل طوّرتها وزارة الدفاع الأمريكية ثم انتشرت","اخترعه ستيف جوبز","شبكة تلفزيونية متطورة"],a:1,e:"الإنترنت شبكة عالمية للتواصل بدأت مشروع ARPANET العسكري الأمريكي ثم تطورت في التسعينيات.",cat:"general",age:[13],d:2},
+];
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+const COLORS = ['#ff6b6b','#4ade80','#60a5fa','#f59e0b','#a78bfa','#f472b6'];
+const CAT_LABELS = {religion:'الدين',science:'العلوم',animals:'الحيوانات',geography:'الجغرافيا',history:'التاريخ',quran:'القرآن',arabic:'اللغة',math:'الرياضيات',general:'معلومات'};
+const CAT_ICONS  = {religion:'🕌',science:'🔬',animals:'🦁',geography:'🌍',history:'📜',quran:'📖',arabic:'✏️',math:'🔢',general:'💡'};
+
+let S = {
+  age:7, cats:['religion'], mode:'solo',
+  qs:[], cur:0, score:0, answered:false,
+  timer:null, tLeft:30,
+  players:[{name:'أنت',color:COLORS[0]}], pScores:[0],
+  buzzed:null, buzzedSet:new Set()
+};
+
+// ══════════════════════════════════════════════════
+// SCREENS
+// ══════════════════════════════════════════════════
+function showScr(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════════
+function pickAge(age,el){
+  S.age=age;
+  document.querySelectorAll('.age-card').forEach(c=>c.className='age-card');
+  el.classList.add('sel'+age);
+}
+function toggleCat(el){
+  el.classList.toggle('sel');
+  S.cats=[...document.querySelectorAll('.cat-btn.sel')].map(c=>c.dataset.cat);
+  if(!S.cats.length){el.classList.add('sel');S.cats=[el.dataset.cat];}
+}
+function pickMode(m,el){
+  S.mode=m;
+  document.querySelectorAll('.mode-card').forEach(c=>c.className='mode-card');
+  el.classList.add(m==='solo'?'sel-solo':'sel-comp');
+}
+function handleStart(){
+  if(S.mode==='compete'){showScr('compete-setup');}
+  else{S.players=[{name:'أنت',color:COLORS[0]}];S.pScores=[0];startGame();}
+}
+
+// ══════════════════════════════════════════════════
+// COMPETE SETUP
+// ══════════════════════════════════════════════════
+function addPlayer(){
+  const pi=document.getElementById('player-inputs');
+  if(pi.children.length>=6){toast('الحد الأقصى ٦ لاعبين');return;}
+  const i=pi.children.length,c=COLORS[i];
+  const d=document.createElement('div');d.className='p-row';
+  d.innerHTML=`<div class="p-dot" style="background:${c}"></div><input class="p-inp" placeholder="اسم اللاعب" maxlength="12"><button class="p-del" onclick="delPlayer(this)">×</button>`;
+  pi.appendChild(d);
+}
+function delPlayer(btn){
+  const pi=document.getElementById('player-inputs');
+  if(pi.children.length<=2){toast('لا بد من لاعبَين على الأقل');return;}
+  btn.closest('.p-row').remove();
+  [...pi.children].forEach((r,i)=>r.querySelector('.p-dot').style.background=COLORS[i]);
+}
+function startCompete(){
+  const rows=document.querySelectorAll('#player-inputs .p-row');
+  S.players=[...rows].map((r,i)=>({name:r.querySelector('.p-inp').value.trim()||'لاعب '+(i+1),color:COLORS[i]}));
+  S.pScores=new Array(S.players.length).fill(0);
+  startGame();
+}
+
+// ══════════════════════════════════════════════════
+// GAME LOGIC
+// ══════════════════════════════════════════════════
+function startGame(){
+  // Filter questions by age and selected categories
+  let pool = QB.filter(q => q.age.includes(S.age) && S.cats.includes(q.cat));
+  // If not enough, relax category filter
+  if(pool.length < 10) pool = QB.filter(q => q.age.includes(S.age));
+  // If still not enough, use all
+  if(pool.length < 10) pool = [...QB];
+  // Shuffle and pick 10
+  pool = shuffle(pool).slice(0,10);
+  S.qs = pool;
+  S.cur = 0; S.score = 0; S.answered = false;
+  S.pScores = new Array(S.players.length).fill(0);
+  showScr('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  const q = S.qs[S.cur];
+  S.answered=false; S.buzzed=null; S.buzzedSet=new Set();
+
+  // Header
+  document.getElementById('prog-lbl').textContent=`السؤال ${aN(S.cur+1)} من ${aN(S.qs.length)}`;
+  document.getElementById('prog-fill').style.width=`${((S.cur+1)/S.qs.length)*100}%`;
+  document.getElementById('q-score').textContent=aN(S.score)+' نقطة';
+  document.getElementById('next-btn').classList.remove('vis');
+
+  // Buzz bar
+  const bb=document.getElementById('buzz-bar'),bf=document.getElementById('buzz-fb');
+  bf.classList.remove('vis'); bf.textContent='';
+  if(S.mode==='compete'){
+    bb.className='buzz-bar vis';
+    bb.innerHTML=S.players.map((p,i)=>`<button class="buzz-btn" id="bz-${i}" style="border-color:${p.color};color:${p.color}" onclick="doBuzz(${i})">⚡ ${p.name}</button>`).join('');
+  } else { bb.className='buzz-bar'; }
+
+  const diff=[1,2,3].map(d=>`<span class="${d<=q.d?'lit':''}"></span>`).join('');
+  const opts=q.o.map((o,i)=>`<button class="opt" id="op-${i}" onclick="pick(${i})"><span class="opt-ltr">${'أبجد'[i]}</span>${o}</button>`).join('');
+
+  document.getElementById('qbody').innerHTML=`
+    <div class="q-cat-badge">${CAT_ICONS[q.cat]||'💡'} ${CAT_LABELS[q.cat]||q.cat}</div>
+    <div class="q-diff">${diff}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="opts">${opts}</div>
+    <div class="expl" id="expl">${q.e||''}</div>`;
+
+  if(S.mode==='compete') lockOpts(true);
+  startTimer(S.age<=7?30:S.age<=10?25:20);
+}
+
+function doBuzz(idx){
+  if(S.answered||S.buzzedSet.has(idx)) return;
+  S.buzzed=idx; S.buzzedSet.add(idx);
+  document.getElementById(`bz-${idx}`).classList.add('buzzed');
+  const bf=document.getElementById('buzz-fb');
+  bf.textContent=`🎯 ${S.players[idx].name} — اختر إجابتك!`;
+  bf.style.color=S.players[idx].color; bf.classList.add('vis');
+  lockOpts(false); clearT(); startTimer(10);
+}
+
+function lockOpts(lock){
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=lock;b.style.opacity=lock?.5:1;});
+}
+
+function pick(i){
+  if(S.answered) return;
+  S.answered=true; clearT();
+  const q=S.qs[S.cur];
+  const ok=i===q.a;
+  document.querySelectorAll('.opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.a) b.classList.add('correct');
+    else if(j===i&&!ok) b.classList.add('wrong');
+  });
+  const pts=ok?Math.max(10,10+Math.floor(S.tLeft/3)):0;
+  if(ok){
+    if(S.mode==='compete'&&S.buzzed!==null) S.pScores[S.buzzed]+=pts;
+    else S.score+=pts;
+    document.getElementById('q-score').textContent=aN(S.score)+' نقطة';
+    toast('✅ صحيح! +'+pts+' نقطة');
+  } else { toast('❌ إجابة خاطئة'); }
+  document.getElementById('expl').classList.add('vis');
+  if(S.mode==='compete'&&S.buzzed!==null){
+    const bf=document.getElementById('buzz-fb');
+    bf.textContent=ok?`🎉 ${S.players[S.buzzed].name} أجاب صحيح! +${pts}`:`❌ إجابة ${S.players[S.buzzed].name} خاطئة`;
+  }
+  setTimeout(()=>{
+    const nb=document.getElementById('next-btn');
+    nb.classList.add('vis');
+    nb.textContent=S.cur+1>=S.qs.length?'🏁 النتائج':'التالي →';
+  },600);
+}
+
+function nextQ(){
+  S.cur++;
+  if(S.cur>=S.qs.length) showResults();
+  else { renderQ(); window.scrollTo(0,0); }
+}
+
+// ══════════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════════
+function startTimer(sec){
+  const circ=document.getElementById('t-fill'),num=document.getElementById('t-num');
+  S.tLeft=sec; clearT();
+  circ.style.strokeDashoffset=0;
+  S.timer=setInterval(()=>{
+    S.tLeft--;
+    num.textContent=S.tLeft;
+    circ.style.strokeDashoffset=126*(1-S.tLeft/sec);
+    const w=S.tLeft<=5;
+    circ.classList.toggle('warn',w); num.classList.toggle('warn',w);
+    if(S.tLeft<=0){
+      clearT();
+      if(!S.answered){
+        S.answered=true;
+        document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j===S.qs[S.cur].a)b.classList.add('reveal');});
+        document.getElementById('expl').classList.add('vis');
+        toast('⏰ انتهى الوقت!');
+        setTimeout(()=>{const nb=document.getElementById('next-btn');nb.classList.add('vis');nb.textContent=S.cur+1>=S.qs.length?'🏁 النتائج':'التالي →';},400);
+      }
+    }
+  },1000);
+}
+function clearT(){if(S.timer){clearInterval(S.timer);S.timer=null;}}
+
+// ══════════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════════
+function showResults(){
+  clearT(); showScr('results');
+  if(S.mode==='compete'){
+    const max=Math.max(...S.pScores),wi=S.pScores.indexOf(max);
+    document.getElementById('r-trophy').textContent='🏆';
+    document.getElementById('r-title').textContent=`الفائز: ${S.players[wi].name}!`;
+    document.getElementById('r-sub').textContent='النتائج النهائية';
+    document.getElementById('sr-wrap').style.display='none';
+    const lb=document.getElementById('lb'); lb.style.display='flex';
+    const sorted=S.players.map((p,i)=>({...p,score:S.pScores[i]})).sort((a,b)=>b.score-a.score);
+    lb.innerHTML=sorted.map((p,r)=>`<div class="lb-row"><div class="lb-rank">${['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣'][r]}</div><div class="lb-dot" style="background:${p.color}"></div><div class="lb-name">${p.name}</div><div class="lb-score">${aN(p.score)}</div></div>`).join('');
+  } else {
+    document.getElementById('sr-wrap').style.display='';
+    document.getElementById('lb').style.display='none';
+    const pct=Math.min(100,Math.round((S.score/(S.qs.length*13))*100));
+    const emoji=pct>=80?'🏆':pct>=60?'⭐':pct>=40?'📚':'💪';
+    const title=pct>=80?'ممتاز! أنت نجم المسابقة':pct>=60?'أحسنت! أداء رائع':pct>=40?'جيد! واصل التعلم':'لا تستسلم! حاول مجدداً';
+    document.getElementById('r-trophy').textContent=emoji;
+    document.getElementById('r-title').textContent=title;
+    document.getElementById('r-sub').textContent=`أجبت على ${aN(S.qs.length)} سؤال`;
+    document.getElementById('r-score').textContent=aN(S.score);
+    document.getElementById('r-total').textContent='نقطة';
+    setTimeout(()=>{
+      document.getElementById('sr-fill').style.strokeDashoffset=351*(1-pct/100);
+    },300);
+  }
+}
+function playAgain(){startGame();}
+function exitQuiz(){if(confirm('هل تريد الخروج؟')){clearT();showScr('home');}}
+
+// ══════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function aN(n){return String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);}
+let tTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(tTimer); tTimer=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ══════════════════════════════════════════════════
+// PWA
+// ══════════════════════════════════════════════════
+const mf={name:"مسابقة الأذكياء",short_name:"مسابقة",start_url:"./",display:"standalone",background_color:"#0d0d1a",theme_color:"#1a1a2e",lang:"ar",dir:"rtl",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌟</text></svg>",sizes:"512x512",type:"image/svg+xml"}]};
+const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/json'}));document.head.appendChild(ml);
+
+let dp;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;setTimeout(()=>document.getElementById('inst-banner').classList.add('show'),4000);});
+document.getElementById('inst-btn').onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;dp=null;document.getElementById('inst-banner').classList.remove('show');}};
+
+if('serviceWorker' in navigator){
+  const sw=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>clients.claim());self.addEventListener('fetch',e=>e.respondWith(caches.open('quiz-v2').then(c=>c.match(e.request).then(r=>r||fetch(e.request).then(rs=>{c.put(e.request,rs.clone());return rs;})))));`;
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
+}
+</script>
+</body>
+</html>
